@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.friple.immarvelhero.ui.viewmodels.HeroScreenViewModel" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_container_main_hero"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:background="@color/white"
+        tools:context=".ui.screens.HeroScreen">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@id/iv_hero_photo"
+                    android:layout_width="0dp"
+                    android:layout_height="300dp"
+                    android:contentDescription="@string/here_must_be_image"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:background="@android:color/darker_gray" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@id/cv_main_back_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_normal_margin"
+                    android:layout_marginEnd="@dimen/horizontal_normal_margin"
+                    android:layout_marginTop="255dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_main_text_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elevation="9dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/cv_main_back_card"
+                        app:layout_constraintEnd_toEndOf="@+id/cv_main_back_card"
+                        app:layout_constraintStart_toStartOf="@+id/cv_main_back_card"
+                        app:layout_constraintTop_toTopOf="@+id/cv_main_back_card">
+
+
+                        <TextView
+                            android:transitionName="tv_screen_hero_name_TN"
+
+
+                            android:id="@id/tv_hero_name"
+                            style="@style/TitleOfCardTextView"
+                            android:text="@string/im_iron_man"
+                            android:textColor="@color/black"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/tv_by_me_hero"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/horizontal_normal_margin"
+                            android:layout_marginTop="@dimen/vertical_small_margin"
+                            android:layout_marginBottom="@dimen/vertical_normal_margin"
+                            android:text="By George Kim"
+                            android:textColor="@color/unselected_gray"
+                            android:textSize="16dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_hero_name" />
+
+
+                        <RatingBar
+                            android:id="@id/rating_bar_of_hero"
+                            style="?android:attr/ratingBarStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/horizontal_normal_margin"
+                            android:numStars="5"
+                            android:progressTint="@color/yellow"
+                            android:rating="4.5"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_by_me_hero"
+                            app:layout_constraintStart_toEndOf="@+id/tv_by_me_hero"
+                            app:layout_constraintTop_toTopOf="@+id/tv_by_me_hero" />
+
+                        <TextView
+                            android:id="@+id/tv_rating_in_numb_hero"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/horizontal_small_margin"
+                            android:text="4.5 Rating"
+                            app:layout_constraintBottom_toBottomOf="@+id/rating_bar_of_hero"
+                            app:layout_constraintStart_toEndOf="@+id/rating_bar_of_hero"
+                            app:layout_constraintTop_toTopOf="@+id/rating_bar_of_hero" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/vertical_small_margin"
+                    android:fontFamily="sans-serif-medium"
+                    android:padding="@dimen/app_normal_padding"
+                    android:text="Description"
+                    android:textSize="24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cv_main_back_card" />
+
+                <TextView
+                    android:id="@+id/tv_bio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/horizontal_normal_margin"
+                    android:layout_marginEnd="@dimen/horizontal_normal_margin"
+                    android:text="Hi!)))"
+                    android:textSize="16dp"
+                    android:textColor="@color/unselected_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="0dp"
+                    android:layout_height="16dp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_bio"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+</layout>

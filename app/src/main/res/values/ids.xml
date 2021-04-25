@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="cv_item_hero_card" type="id" />
+    <item name="iv_hero_photo" type="id" />
+    <item name="tv_hero_name" type="id" />
+    <item name="cl_hero_card" type="id" />
+    <item name="rv_marvel_heroes" type="id" />
+    <item name="srl_refresh" type="id" />
+    <item name="pb_heroes_loading" type="id" />
+    <item name="nsv_container" type="id" />
+    <item name="tv_item_count_stories" type="id" />
+    <item name="cv_hero_card" type="id" />
+    <item name="view_item_button" type="id" />
+    <item name="fl_item_button" type="id" />
+    <item name="cl_item_text_container" type="id" />
+    <item name="rating_bar_of_hero" type="id" />
+    <item name="fl_main_button2" type="id" />
+    <item name="cv_main_back_card" type="id" />
+</resources>

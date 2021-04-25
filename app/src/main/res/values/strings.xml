@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="app_name">ImMarvelHero</string>
+    <string name="here_must_be_image">HERE MUST BE IMAGE</string>
+    <string name="im_iron_man">Im Iron Man</string>
+    <string name="try_again">Try again</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="check_your_internet_connection">Check your internet connection!</string>
+
+</resources>

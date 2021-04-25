@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="item_hero_hard_height">200dp</dimen>
+    <dimen name="horizontal_normal_margin">16dp</dimen>
+    <dimen name="horizontal_small_margin">8dp</dimen>
+    <dimen name="horizontal_big_margin">32dp</dimen>
+    <dimen name="vertical_normal_margin">16dp</dimen>
+    <dimen name="vertical_small_margin">8dp</dimen>
+    <dimen name="vertical_big_margin">32dp</dimen>
+    <dimen name="app_small_padding">8dp</dimen>
+    <dimen name="app_normal_padding">16dp</dimen>
+    <dimen name="bit_text_size">36sp</dimen>
+</resources>
