@@ -7,5 +7,4 @@ data class MarvelData (
     val total: Int,
     val count: Int,
     val results: List<MarvelCharacter>
-
 )

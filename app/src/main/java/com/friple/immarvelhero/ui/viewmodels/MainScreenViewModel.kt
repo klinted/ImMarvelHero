@@ -4,13 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.friple.immarvelhero.network.entities.MarvelCharacter
+import com.friple.immarvelhero.repositories.MainRepo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+// TODO: 4/25/2021 Change type of multithreading
+
 class MainScreenViewModel : ViewModel() {
 
+    // For BD
+    // Offset for getting items
     private var offset = 0
+    // Limit of getting items
     private var limit = 20
 
     private val isLoading = MutableLiveData(true)
@@ -18,8 +24,8 @@ class MainScreenViewModel : ViewModel() {
 
     private val marvelListCharacters = MutableLiveData<List<MarvelCharacter>>()
 
-    fun getIsLoading(): LiveData<Boolean> {
-        return isLoading
+    fun getIsError(): LiveData<Boolean> {
+        return error
     }
 
 
@@ -27,7 +33,11 @@ class MainScreenViewModel : ViewModel() {
         return marvelListCharacters
     }
 
+    // Load data from BD. Then we check marvel list. If it's empty we get it with new data.
+    // Or get old data and plus new to it
+    // Then call to function (Lambda)
     fun updateData(function: () -> Unit) {
+
         isLoading.value = true
         loadHeroes {
             if (marvelListCharacters.value == null) {
@@ -35,15 +45,17 @@ class MainScreenViewModel : ViewModel() {
             } else {
                 marvelListCharacters.value = marvelListCharacters.value!!.plus(it)
             }
+            // Add offset for next new items
             offset += 20
-
             isLoading.value = false
         }
 
         function()
     }
 
+    // Load data from BD in background
     private fun loadHeroes(function: (List<MarvelCharacter>) -> Unit) {
+
         CoroutineScope(Dispatchers.IO).launch {
             MainRepo.instance.load(offset, limit,
                 {
@@ -51,7 +63,6 @@ class MainScreenViewModel : ViewModel() {
                 }, {
                     error.value = true
                     isLoading.value = false
-                    updateData {  }
                 })
         }
     }

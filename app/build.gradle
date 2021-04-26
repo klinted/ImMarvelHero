@@ -55,22 +55,28 @@ dependencies {
 
     // Retrofit
     def retrofit_version = "2.9.0"
+    // Interceptor
+    def interceptor_version = "3.9.0"
     // NavComponent
     def nav_version = "2.3.5"
+    // Coroutines
+    def glide_version = "4.12.0"
+    // Coroutines
+    def coroutines_version = "1.4.3"
 
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
 
     // NavComponent
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation "com.github.bumptech.glide:glide:$glide_version"
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
 }

@@ -6,7 +6,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.friple.immarvelhero.R
 import com.friple.immarvelhero.utilits.APP_ACTIVITY
-import com.friple.immarvelhero.utilits.isOnline
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +16,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initToolbar()
+
+        APP_ACTIVITY = this
+    }
+
+    private fun initToolbar() {
         mToolbar = main_toolbar
         mToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
 
@@ -24,8 +29,6 @@ class MainActivity : AppCompatActivity() {
 
         val upArrow = ContextCompat.getDrawable(this, R.drawable.ic_baseline_arrow_back_24)
         supportActionBar?.setHomeAsUpIndicator(upArrow)
-
-        APP_ACTIVITY = this
     }
 
 }

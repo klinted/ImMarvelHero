@@ -18,6 +18,19 @@
         android:layout_height="match_parent"
         tools:context=".ui.screens.MainScreen">
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_scroll_to_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:stateListAnimator="@anim/fragment_fade_enter"
+            android:layout_margin="@dimen/vertical_normal_margin"
+            android:src="@drawable/ic_baseline_keyboard_arrow_up_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white"
+            android:contentDescription="TODO" />
+
         <androidx.core.widget.NestedScrollView
             android:id="@id/nsv_container"
             android:overScrollMode="never"
@@ -30,18 +43,25 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@id/rv_marvel_heroes"
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:id="@+id/coordinator_layout"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:nestedScrollingEnabled="false"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:itemCount="2"
-                    tools:listitem="@layout/item_marvel_hero" />
+                    android:layout_weight="1">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@id/rv_marvel_heroes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/item_marvel_hero" />
+
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
                 <ProgressBar
                     android:id="@id/pb_heroes_loading"

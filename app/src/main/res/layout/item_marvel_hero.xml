@@ -24,6 +24,7 @@
                 android:id="@id/iv_hero_photo"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:src="@drawable/ic_launcher_background"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -61,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/horizontal_normal_margin"
             android:layout_marginTop="@dimen/vertical_small_margin"
-            android:text="By George Kim"
+            android:text="@string/standard_by_who"
             android:textColor="@color/unselected_gray"
             android:textSize="16dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/horizontal_small_margin"
-            android:text="4.5 Rating"
+            android:text="@string/standard_rating"
             app:layout_constraintBottom_toBottomOf="@+id/rating_bar"
             app:layout_constraintStart_toEndOf="@+id/rating_bar"
             app:layout_constraintTop_toTopOf="@+id/rating_bar" />
@@ -95,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/vertical_small_margin"
             android:padding="@dimen/app_normal_padding"
-            android:text="173 stories | 120 Review"
+            android:text="@string/standard_stories_review"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rating_bar" />
 

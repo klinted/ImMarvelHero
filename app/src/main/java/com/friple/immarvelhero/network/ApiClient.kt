@@ -7,6 +7,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+// TODO: 4/25/2021 Make it universal
+
 interface ApiClient {
 
     companion object {

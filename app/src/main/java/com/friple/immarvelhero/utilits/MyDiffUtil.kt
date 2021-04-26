@@ -5,8 +5,8 @@ import com.friple.immarvelhero.network.entities.MarvelCharacter
 
 
 class MyDiffUtil(
-     var oldList: List<MarvelCharacter>,
-     var newList: List<MarvelCharacter>
+    private var oldList: List<MarvelCharacter>,
+    private var newList: List<MarvelCharacter>
 ) :
     DiffUtil.Callback() {
 
@@ -22,6 +22,7 @@ class MyDiffUtil(
         return oldList[oldItemPosition].id == newList[newItemPosition].id
     }
 
+    // Check by id, name and stories of marvel character
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return when {
             oldList[oldItemPosition].id != newList[newItemPosition].id -> {

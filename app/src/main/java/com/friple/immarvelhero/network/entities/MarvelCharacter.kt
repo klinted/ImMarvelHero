@@ -8,4 +8,4 @@ data class MarvelCharacter (
     val description: String,
     val stories : Stories,
     val thumbnail: Thumbnail
-        )
+)

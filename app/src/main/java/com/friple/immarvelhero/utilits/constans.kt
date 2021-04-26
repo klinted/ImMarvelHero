@@ -1,8 +1,18 @@
 package com.friple.immarvelhero.utilits
 
+import android.graphics.Bitmap
 import com.friple.immarvelhero.ui.activity.MainActivity
 
 lateinit var APP_ACTIVITY: MainActivity
+
+
+
+var HERO_BITMAP: Bitmap? = null
+var ID_FOR_BITMAP: String? = null
+
+
+
+// For marvel API
 
 const val BASE_URL = "https://gateway.marvel.com/v1/public/"
 

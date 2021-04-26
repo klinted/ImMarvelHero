@@ -4,18 +4,22 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.BaseBundle
-import android.os.Build
 import android.util.Log
 import android.widget.ImageView
-import androidx.annotation.RequiresApi
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import com.bumptech.glide.Glide
 import com.friple.immarvelhero.R
-import com.friple.immarvelhero.network.entities.MarvelCharacter
+import com.friple.immarvelhero.ui.screens.FragmentWithoutInternet
+import com.friple.immarvelhero.ui.screens.MainScreen
+import java.lang.RuntimeException
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
+
+// Download and set image by Glide
 fun ImageView.downloadAndSetImage(url: String) {
     val drawableImage = R.drawable.place_holder_for_image
 
@@ -23,13 +27,21 @@ fun ImageView.downloadAndSetImage(url: String) {
         .load(url)
         .placeholder(drawableImage)
         .fitCenter()
+        .skipMemoryCache(true)
         .into(this)
 }
 
+// Get current time stamp
 fun getTimeStamp(): String {
     return (System.currentTimeMillis() / 1000).toString()
 }
 
+// Show toast
+fun showToast(message: String) {
+    Toast.makeText(APP_ACTIVITY, message, Toast.LENGTH_LONG).show()
+}
+
+// Crypter
 fun String.toMd5(): String {
     val MD5 = "MD5"
     try {
@@ -47,12 +59,12 @@ fun String.toMd5(): String {
         }
         return hexString.toString()
     } catch (e: NoSuchAlgorithmException) {
-        Log.d("TAG", "toMd5: ${e.message}")
         e.printStackTrace()
     }
     return ""
 }
 
+// Internet checker
 @SuppressLint("NewApi")
 fun isOnline(context: Context): Boolean {
     val connectivityManager =
@@ -77,4 +89,19 @@ fun isOnline(context: Context): Boolean {
         }
     }
     return false
+}
+
+// Navigate to fragment
+fun Fragment.navTo(screen: String) {
+
+    findNavController().navigate(
+         when (screen) {
+            "MAIN_SCREEN" -> R.id.action_fragmentWithoutInternet_to_mainScreen
+            "FRAGMENT_WITHOUT_INTERNET" -> R.id.action_mainScreen_to_fragmentWithoutInternet
+            else -> 0
+        },
+        null,
+        null,
+        null,
+    )
 }
