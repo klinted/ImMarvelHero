@@ -1,27 +1,24 @@
 package com.friple.immarvelhero.ui.screens
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.RatingBar
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.drawToBitmap
-import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.friple.immarvelhero.R
 import com.friple.immarvelhero.databinding.ScreenMainBinding
 import com.friple.immarvelhero.network.entities.MarvelCharacter
+import com.friple.immarvelhero.ui.recyclerview.viewes.AppViewFactory
 import com.friple.immarvelhero.ui.viewmodels.MainScreenViewModel
 import com.friple.immarvelhero.utilits.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -73,7 +70,7 @@ class MainScreen : Fragment(), AppHeroClickListener {
             // Check data in viewModel. If null make request
             val listCharacters = mScreenViewModel.getMarvelListCharacters().value
             if (listCharacters != null) {
-                mAdapter.setData(listCharacters as MutableList<MarvelCharacter>)
+                mAdapter.setData(AppViewFactory.getViewType(TYPE_SCREEN_HEROES, listCharacters))
             } else {
                 mScreenViewModel.updateData {}
             }

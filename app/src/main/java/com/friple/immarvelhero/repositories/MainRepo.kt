@@ -1,6 +1,6 @@
 package com.friple.immarvelhero.repositories
 
-import com.friple.immarvelhero.network.ApiClient
+import com.friple.immarvelhero.network.ApiService
 import com.friple.immarvelhero.network.entities.MarvelResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,7 +13,7 @@ class MainRepo {
 
     fun load( offset: Int, limit: Int, function: (MarvelResponse) -> Unit, onError: () -> Unit) {
 
-            val call: Call<MarvelResponse> = ApiClient.getApiClient().getHeroes(offset, limit)
+            val call: Call<MarvelResponse> = ApiService.getMarvelService().getHeroes(offset, limit)
             call.enqueue(object : Callback<MarvelResponse> {
 
                 override fun onResponse(

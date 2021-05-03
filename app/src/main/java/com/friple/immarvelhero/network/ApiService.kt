@@ -9,11 +9,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 // TODO: 4/25/2021 Make it universal
 
-interface ApiClient {
+object ApiService {
 
-    companion object {
-
-        fun getApiClient(): MarvelApi {
+        fun getMarvelService(): MarvelService {
             val logging = HttpLoggingInterceptor()
             logging.level = HttpLoggingInterceptor.Level.BODY
 
@@ -40,7 +38,6 @@ interface ApiClient {
                 .client(httpClient.build())
                 .build()
 
-            return retrofit.create(MarvelApi::class.java)
+            return retrofit.create(MarvelService::class.java)
         }
-    }
 }

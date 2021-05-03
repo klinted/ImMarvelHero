@@ -19,7 +19,6 @@ class MainScreenViewModel : ViewModel() {
     // Limit of getting items
     private var limit = 20
 
-    private val isLoading = MutableLiveData(true)
     private val error = MutableLiveData(false)
 
     private val marvelListCharacters = MutableLiveData<List<MarvelCharacter>>()
@@ -38,7 +37,6 @@ class MainScreenViewModel : ViewModel() {
     // Then call to function (Lambda)
     fun updateData(function: () -> Unit) {
 
-        isLoading.value = true
         loadHeroes {
             if (marvelListCharacters.value == null) {
                 marvelListCharacters.value = it
@@ -47,7 +45,6 @@ class MainScreenViewModel : ViewModel() {
             }
             // Add offset for next new items
             offset += 20
-            isLoading.value = false
         }
 
         function()
@@ -62,7 +59,6 @@ class MainScreenViewModel : ViewModel() {
                     function(it.data.results)
                 }, {
                     error.value = true
-                    isLoading.value = false
                 })
         }
     }

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.friple.immarvelhero.R
 import com.friple.immarvelhero.network.entities.MarvelCharacter
+import com.friple.immarvelhero.ui.recyclerview.viewes.BaseView
 import com.friple.immarvelhero.utilits.*
 import kotlinx.android.synthetic.main.item_marvel_hero.view.*
 import java.util.*
@@ -27,7 +28,7 @@ class MainScreenAdapter(
     private var mListHolders = mutableListOf<MarvelCharacterHolder>()
 
     // Set data and check it by DiffUtil
-    fun setData(newListMarvelCharacter: MutableList<MarvelCharacter>) {
+    fun setData(item: BaseView) {
 
         val diffUtil = MyDiffUtil(mListHeroesCache, newListMarvelCharacter)
         val diffResults = DiffUtil.calculateDiff(diffUtil)
@@ -102,7 +103,7 @@ class MainScreenAdapter(
             tvNameOfHero.text = marvelCharacter.name
             tvStories.text = makeString(marvelCharacter)
             rbRatingBar.rating = randFloat()
-            tvRatingNum.text = makeRatingString()
+            tvRatingNum.text = makeRatingString(rbRatingBar)
 
             val url =
                 "${marvelCharacter.thumbnail.path}/standard_fantastic.${marvelCharacter.thumbnail.extension}"
@@ -114,20 +115,6 @@ class MainScreenAdapter(
             } else {
                 ivPhotoOfHero.downloadAndSetImage(url)
             }
-        }
-
-        private fun randFloat(): Float {
-            val rand = Random()
-            return rand.nextFloat() * (0f - 5f) + 0f
-        }
-
-        private fun makeRatingString(): CharSequence {
-            return rbRatingBar.rating.toString() + " Rating"
-        }
-
-        private fun makeString(marvelCharacter: MarvelCharacter): CharSequence {
-            return marvelCharacter.stories.available.toString() + " stories" + " | " +
-                    (0..700).random() + " Review"
         }
 
         fun onAttach(marvelCharacter: MarvelCharacter, listener: AppHeroClickListener) {
