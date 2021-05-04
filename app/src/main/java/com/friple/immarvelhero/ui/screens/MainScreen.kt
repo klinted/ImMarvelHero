@@ -4,162 +4,113 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.RatingBar
-import android.widget.ScrollView
-import androidx.activity.OnBackPressedCallback
 import androidx.core.view.drawToBitmap
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.friple.immarvelhero.R
 import com.friple.immarvelhero.databinding.ScreenMainBinding
-import com.friple.immarvelhero.network.entities.MarvelCharacter
-import com.friple.immarvelhero.ui.recyclerview.viewes.AppViewFactory
-import com.friple.immarvelhero.ui.recyclerview.viewes.BaseView
+import com.friple.immarvelhero.ui.adapters.MainScreenAdapter
+import com.friple.immarvelhero.ui.recyclerview.views.BaseView
+import com.friple.immarvelhero.ui.viewmodels.BaseViewModel.State
 import com.friple.immarvelhero.ui.viewmodels.MainScreenViewModel
-import com.friple.immarvelhero.utilits.*
+import com.friple.immarvelhero.utilits.APP_ACTIVITY
+import com.friple.immarvelhero.utilits.AppHeroClickListener
+import com.friple.immarvelhero.utilits.AppNestedScrollView
+import com.friple.immarvelhero.utilits.goToTop
+import com.friple.immarvelhero.utilits.states.AppStatesController
+import com.friple.immarvelhero.utilits.states.AppStatesMainControllerImpl
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MainScreen : Fragment(), AppHeroClickListener {
 
     private lateinit var mBinding: ScreenMainBinding
+    private lateinit var mScreenViewModel: MainScreenViewModel
 
+    private lateinit var mAppStatesMainController: AppStatesController
 
     // For RecyclerView
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: MainScreenAdapter
     private lateinit var mLayoutManager: LinearLayoutManager
-
-    private lateinit var mNestedScrollView: NestedScrollView
+    private lateinit var mNestedScrollView: AppNestedScrollView
 
     // Views
     private lateinit var mFabScrollToTop: FloatingActionButton
+    private lateinit var mProgressBar: ProgressBar
 
-    private lateinit var mScreenViewModel: MainScreenViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // Init adapter
-        mAdapter = MainScreenAdapter(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        // Init adapter
+        mAdapter = MainScreenAdapter(this)
+
         mBinding = DataBindingUtil.inflate(inflater, R.layout.screen_main, container, false)
 
         mScreenViewModel = ViewModelProvider(this).get(MainScreenViewModel::class.java)
 
         mBinding.viewModel = mScreenViewModel
 
-        internetCheck()
-
         return mBinding.root
-    }
-
-    // If we don't have connection let's go to another screen (Without internet)
-    private fun internetCheck() {
-        if (isOnline(APP_ACTIVITY)) {
-
-            mBinding.pbHeroesLoading.visibility = View.VISIBLE
-
-            // Check data in viewModel. If null make request
-            val listCharacters = mScreenViewModel.getMarvelListCharacters().value
-            val listCharacterViews = mutableListOf<BaseView>()
-
-            if (listCharacters != null) {
-                listCharacters.forEach { character ->
-                    listCharacterViews.add(
-                        AppViewFactory.getViewType(
-                            TYPE_SCREEN_HEROES,
-                            character
-                        )
-                    )
-                }
-                mAdapter.setData(listCharacterViews)
-            } else {
-                mScreenViewModel.updateData {}
-            }
-        } else {
-
-            mBinding.pbHeroesLoading.visibility = View.GONE
-
-            val listCharacterViews = mutableListOf<BaseView>()
-            listCharacterViews.add(AppViewFactory.getViewType(TYPE_SCREEN_ERROR))
-            mAdapter.setData(listCharacterViews)
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         setObservers()
-
-        initBackButton()
         initFields()
         initRecyclerView()
     }
 
     private fun setObservers() {
-        // Here we check data for changing
-        mScreenViewModel.getMarvelListCharacters().observe(viewLifecycleOwner, { list ->
 
-            mBinding.pbHeroesLoading.visibility = View.VISIBLE
-
-            val listCharacterViews = mutableListOf<BaseView>()
-            list.forEach { character ->
-                listCharacterViews.add(AppViewFactory.getViewType(TYPE_SCREEN_HEROES, character))
-            }
-            mAdapter.setData(listCharacterViews)
-        })
-
-        // If error we go to another screen (Without internet)
-        mScreenViewModel.getIsError().observe(viewLifecycleOwner, {
-            if (it) {
-
-                mBinding.pbHeroesLoading.visibility = View.GONE
-
-                val listCharacterViews = mutableListOf<BaseView>()
-                listCharacterViews.add(AppViewFactory.getViewType(TYPE_SCREEN_ERROR, MarvelCharacter()))
-                mAdapter.setData(listCharacterViews)
-            }
-        })
-    }
-
-    private fun initBackButton() {
-        val callback: OnBackPressedCallback =
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    APP_ACTIVITY.findNavController(R.id.main_nav_container).navigateUp()
+        mScreenViewModel.getState().observe(viewLifecycleOwner, { state ->
+            when (state) {
+                State.CREATED -> {
+                    mAppStatesMainController.onCreated()
+                }
+                State.LOADING -> {
+                    mAppStatesMainController.onLoading()
+                }
+                State.SUCCESS -> {
+                    mScreenViewModel.getMarvelListCharacters().value?.let { characterList ->
+                        mAppStatesMainController.onSuccess(characterList)
+                    }
+                }
+                State.ERROR -> {
+                    mAppStatesMainController.onError()
+                }
+                else -> {
+                    mAppStatesMainController.onError()
                 }
             }
-        APP_ACTIVITY.onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+        })
     }
 
     private fun initFields() {
+        mProgressBar = mBinding.pbHeroesLoading
+
         // Init for recycle
         mNestedScrollView = mBinding.nsvContainer
         mRecyclerView = mBinding.rvMarvelHeroes
 
         mLayoutManager = LinearLayoutManager(APP_ACTIVITY)
 
+        // For states
+        mAppStatesMainController =
+            AppStatesMainControllerImpl(mProgressBar, mNestedScrollView, mAdapter, mScreenViewModel)
+
         // Init for views
         mFabScrollToTop = mBinding.fabScrollToTop
 
         // UP!!!
-        mFabScrollToTop.setOnClickListener {
-            mNestedScrollView.postDelayed(
-                {
-                    mNestedScrollView.fullScroll(ScrollView.FOCUS_UP)
-                },
-                0
-            )
-        }
-
+        mFabScrollToTop.setOnClickListener { mNestedScrollView.goToTop() }
     }
 
     private fun initRecyclerView() {
@@ -172,30 +123,16 @@ class MainScreen : Fragment(), AppHeroClickListener {
 
             // Check when load data
             if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
-                mScreenViewModel.updateData {
-
-                    // If we don't have internet, you know what
-                    if (!isOnline(APP_ACTIVITY)) {
-                        val listCharacterViews = mutableListOf<BaseView>()
-                        listCharacterViews.add(AppViewFactory.getViewType(TYPE_SCREEN_ERROR, MarvelCharacter()))
-                        mAdapter.setData(listCharacterViews)
-                    }
-                }
+                mScreenViewModel.updateData()
             }
 
             // Visibility of FAB
-            if (scrollY > 0) {
-                mFabScrollToTop.visibility = View.VISIBLE
-            } else {
-                mFabScrollToTop.visibility = View.GONE
-            }
+            mFabScrollToTop.visibility = if (scrollY > 0) View.VISIBLE else View.GONE
         })
     }
 
     // Callback from adapter
     override fun onClickFromItem(view: BaseView, hashMap: HashMap<String, View>) {
-
-        val heroScreen = HeroScreen()
 
         // For anim
         val p1 = hashMap["cvMainBackCard"]!!
@@ -217,6 +154,8 @@ class MainScreen : Fragment(), AppHeroClickListener {
             putStringArrayList("transitionName", transitionNameArrayList)
         }
 
+        val heroScreen = HeroScreen()
+
         // Pass fields to hero screen
         heroScreen.arguments = arguments
         heroScreen.bitmapImage = hashMap["ivPhotoOfHero"]!!.drawToBitmap()
@@ -230,23 +169,14 @@ class MainScreen : Fragment(), AppHeroClickListener {
             .commit()
     }
 
+    // Callback from adapter
     override fun onClickFromItem() {
-        mScreenViewModel.updateData {
-            toDarkStatusBar()
-            isToolbarVisible(true)
-        }
+        mScreenViewModel.updateData()
     }
 
     override fun onResume() {
         super.onResume()
         APP_ACTIVITY.title = "Home"
         APP_ACTIVITY.supportActionBar?.setHomeButtonEnabled(false)
-    }
-
-    // TODO: 4/25/2021 Could be leak
-    override fun onDestroy() {
-        super.onDestroy()
-        mAdapter.apply { onDestroy() }
-
     }
 }

@@ -16,6 +16,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:background="@color/unselected_black"
         tools:context=".ui.screens.MainScreen">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -23,6 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            app:backgroundTint="@color/red2"
             android:stateListAnimator="@anim/fragment_fade_enter"
             android:layout_margin="@dimen/vertical_normal_margin"
             android:src="@drawable/ic_baseline_keyboard_arrow_up_24"
@@ -31,7 +33,7 @@
             app:tint="@color/white"
             android:contentDescription="TODO" />
 
-        <androidx.core.widget.NestedScrollView
+        <com.friple.immarvelhero.utilits.AppNestedScrollView
             android:id="@id/nsv_container"
             android:overScrollMode="never"
             android:layout_width="match_parent"
@@ -54,6 +56,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -68,12 +71,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/app_normal_padding"
-                    android:visibility="visible"
+                    android:indeterminateTint="@color/white"
+                    android:progressBackgroundTint="@color/white"
                     app:layout_constraintTop_toBottomOf="@+id/view" />
 
             </LinearLayout>
 
-        </androidx.core.widget.NestedScrollView>
+        </com.friple.immarvelhero.utilits.AppNestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

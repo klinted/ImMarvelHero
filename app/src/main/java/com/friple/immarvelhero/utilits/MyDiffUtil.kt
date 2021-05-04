@@ -1,8 +1,7 @@
 package com.friple.immarvelhero.utilits
 
 import androidx.recyclerview.widget.DiffUtil
-import com.friple.immarvelhero.network.entities.MarvelCharacter
-import com.friple.immarvelhero.ui.recyclerview.viewes.BaseView
+import com.friple.immarvelhero.ui.recyclerview.views.BaseView
 
 
 class MyDiffUtil(

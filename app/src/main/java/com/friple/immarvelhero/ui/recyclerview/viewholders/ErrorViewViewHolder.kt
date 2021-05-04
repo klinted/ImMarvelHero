@@ -5,7 +5,7 @@ import android.widget.Button
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.friple.immarvelhero.R
-import com.friple.immarvelhero.ui.recyclerview.viewes.BaseView
+import com.friple.immarvelhero.ui.recyclerview.views.BaseView
 import com.friple.immarvelhero.utilits.*
 
 class ErrorViewViewHolder(view: View) : RecyclerView.ViewHolder(view), BaseViewHolder {
@@ -16,8 +16,7 @@ class ErrorViewViewHolder(view: View) : RecyclerView.ViewHolder(view), BaseViewH
     override fun drawMarvelHero(view: BaseView) {
         val lp = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, getHeightOfScreenInPx())
         mClError.layoutParams = lp
-        isToolbarVisible(false)
-        toLightStatusBar()
+        toLightTheme()
     }
 
     override fun onAttach(view: BaseView, listener: AppHeroClickListener) {
@@ -25,6 +24,7 @@ class ErrorViewViewHolder(view: View) : RecyclerView.ViewHolder(view), BaseViewH
             // If phone has internet nav to main screen, else just show toast
             if (isOnline(APP_ACTIVITY)) {
                 listener.onClickFromItem()
+                toDarkTheme()
                 showToast("Back online")
             } else {
                 showToast("Try later...")

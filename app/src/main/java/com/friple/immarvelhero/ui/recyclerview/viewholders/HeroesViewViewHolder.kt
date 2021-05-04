@@ -8,7 +8,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.friple.immarvelhero.ui.recyclerview.viewes.BaseView
+import com.friple.immarvelhero.ui.recyclerview.views.BaseView
 import com.friple.immarvelhero.utilits.*
 import kotlinx.android.synthetic.main.item_marvel_hero.view.*
 

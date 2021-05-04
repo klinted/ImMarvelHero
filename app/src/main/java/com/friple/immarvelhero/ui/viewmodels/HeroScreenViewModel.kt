@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class HeroScreenViewModel : ViewModel() {
+class HeroScreenViewModel : BaseViewModel() {
 
     private var heroDate = MutableLiveData<Map<String, Any>>()
     private var bitmap = MutableLiveData<Bitmap>()

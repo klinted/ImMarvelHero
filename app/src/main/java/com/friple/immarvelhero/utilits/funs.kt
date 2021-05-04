@@ -2,17 +2,19 @@ package com.friple.immarvelhero.utilits
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Point
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.widget.ImageView
+import android.widget.ScrollView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
 import com.bumptech.glide.Glide
 import com.friple.immarvelhero.R
 import java.security.MessageDigest
@@ -96,16 +98,12 @@ fun isOnline(context: Context): Boolean {
     return false
 }
 
-fun isToolbarVisible(visible: Boolean) {
-    if (visible) {
-        APP_ACTIVITY.supportActionBar?.show()
-    } else {
-        APP_ACTIVITY.supportActionBar?.hide()
-    }
-}
+fun toLightTheme() {
 
-fun toLightStatusBar() {
+    APP_ACTIVITY.mToolbar.background = ContextCompat.getDrawable(APP_ACTIVITY, R.color.white)
+
     APP_ACTIVITY.window.statusBarColor = ContextCompat.getColor(APP_ACTIVITY, R.color.white)
+
     APP_ACTIVITY.mClMainActivity.background = ContextCompat.getDrawable(APP_ACTIVITY, R.color.white)
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -125,18 +123,23 @@ fun toLightStatusBar() {
     }
 }
 
-fun toDarkStatusBar() {
+fun toDarkTheme() {
+
+    APP_ACTIVITY.mToolbar.background =
+        ContextCompat.getDrawable(APP_ACTIVITY, R.color.red)
 
     APP_ACTIVITY.mClMainActivity.background =
-        ContextCompat.getDrawable(APP_ACTIVITY, R.color.design_default_color_primary)
+        ContextCompat.getDrawable(APP_ACTIVITY, R.color.red)
 
-    APP_ACTIVITY.window.statusBarColor = ContextCompat.getColor(
-        APP_ACTIVITY,
-        R.color.design_default_color_primary
-    )
+    APP_ACTIVITY.window.statusBarColor =
+        ContextCompat.getColor(APP_ACTIVITY, R.color.unselected_black)
 
     // Change color of text on statusBar
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         APP_ACTIVITY.window.clearFlags(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
     }
+}
+
+fun NestedScrollView.goToTop() {
+    this.postDelayed({ this.fullScroll(ScrollView.FOCUS_UP) }, 0)
 }

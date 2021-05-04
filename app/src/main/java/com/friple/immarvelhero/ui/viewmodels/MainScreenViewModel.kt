@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 // TODO: 4/25/2021 Change type of multithreading
 
-class MainScreenViewModel : ViewModel() {
+class MainScreenViewModel : BaseViewModel() {
 
     // For BD
     // Offset for getting items
@@ -19,14 +19,7 @@ class MainScreenViewModel : ViewModel() {
     // Limit of getting items
     private var limit = 20
 
-    private val error = MutableLiveData(false)
-
     private val marvelListCharacters = MutableLiveData<List<MarvelCharacter>>()
-
-    fun getIsError(): LiveData<Boolean> {
-        return error
-    }
-
 
     fun getMarvelListCharacters(): LiveData<List<MarvelCharacter>> {
         return marvelListCharacters
@@ -35,7 +28,8 @@ class MainScreenViewModel : ViewModel() {
     // Load data from BD. Then we check marvel list. If it's empty we get it with new data.
     // Or get old data and plus new to it
     // Then call to function (Lambda)
-    fun updateData(function: () -> Unit) {
+    fun updateData() {
+        setState(State.LOADING)
 
         loadHeroes {
             if (marvelListCharacters.value == null) {
@@ -45,7 +39,6 @@ class MainScreenViewModel : ViewModel() {
             }
             // Add offset for next new items
             offset += 20
-            function()
         }
     }
 
@@ -56,9 +49,9 @@ class MainScreenViewModel : ViewModel() {
             MainRepo.instance.load(offset, limit,
                 {
                     function(it.data.results)
-                    error.value = false
+                    setState(State.SUCCESS)
                 }, {
-                    error.value = true
+                    setState(State.ERROR)
                 })
         }
     }

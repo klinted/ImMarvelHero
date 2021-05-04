@@ -11,7 +11,7 @@ import retrofit2.Response
 
 class MainRepo {
 
-    fun load( offset: Int, limit: Int, function: (MarvelResponse) -> Unit, onError: () -> Unit) {
+    fun load(offset: Int, limit: Int, onSuccess: (MarvelResponse) -> Unit, onError: () -> Unit) {
 
             val call: Call<MarvelResponse> = ApiService.getMarvelService().getHeroes(offset, limit)
             call.enqueue(object : Callback<MarvelResponse> {
@@ -22,7 +22,7 @@ class MainRepo {
                 ) {
                     // If successful, we make callback
                     if (response.isSuccessful) {
-                        response.body()?.let { function(it) }
+                        response.body()?.let { onSuccess(it) }
                     }
                 }
 

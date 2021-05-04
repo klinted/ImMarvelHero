@@ -1,9 +1,9 @@
-package com.friple.immarvelhero.ui.screens
+package com.friple.immarvelhero.ui.adapters
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.friple.immarvelhero.ui.recyclerview.viewes.BaseView
+import com.friple.immarvelhero.ui.recyclerview.views.BaseView
 import com.friple.immarvelhero.ui.recyclerview.viewholders.AppHolderFactory
 import com.friple.immarvelhero.ui.recyclerview.viewholders.BaseViewHolder
 import com.friple.immarvelhero.utilits.*
@@ -67,11 +67,4 @@ class MainScreenAdapter(
     }
 
     override fun getItemCount(): Int = mListHeroesCache.size
-
-    // For delete references
-    fun onDestroy() {
-        mListHolders.forEach {
-            it.onDetach()
-        }
-    }
 }

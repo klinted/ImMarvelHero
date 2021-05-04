@@ -1,7 +1,7 @@
 package com.friple.immarvelhero.utilits
 
 import android.view.View
-import com.friple.immarvelhero.ui.recyclerview.viewes.BaseView
+import com.friple.immarvelhero.ui.recyclerview.views.BaseView
 
 interface AppHeroClickListener {
 

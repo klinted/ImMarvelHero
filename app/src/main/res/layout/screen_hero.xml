@@ -29,7 +29,6 @@
                     android:layout_height="300dp"
                     android:contentDescription="@string/here_must_be_image"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
