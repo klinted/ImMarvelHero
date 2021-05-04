@@ -6,7 +6,7 @@ import com.friple.immarvelhero.utilits.TYPE_SCREEN_HEROES
 
 object AppViewFactory {
 
-    fun getViewType(typeOfScreen: Int = 0, characterList: List<MarvelCharacter>): BaseView {
+    fun getViewType(typeOfScreen: Int, character: MarvelCharacter = MarvelCharacter()): BaseView {
         return when (typeOfScreen) {
             TYPE_SCREEN_HEROES -> {
                 HeroesView(
@@ -21,13 +21,7 @@ object AppViewFactory {
                 ErrorView()
             }
             else -> {
-                HeroesView(
-                    character.id,
-                    character.name,
-                    character.description,
-                    character.stories,
-                    character.thumbnail
-                )
+                ErrorView()
             }
         }
     }

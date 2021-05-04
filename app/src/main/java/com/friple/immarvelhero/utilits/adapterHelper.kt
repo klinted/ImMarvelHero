@@ -22,7 +22,7 @@ fun makeRatingString(ratingBar: RatingBar): CharSequence {
     return ratingBar.rating.toString() + " Rating"
 }
 
-fun makeString(marvelCharacter: MarvelCharacter): CharSequence {
-    return marvelCharacter.stories.available.toString() + " stories" + " | " +
+fun makeString(string: String): CharSequence {
+    return string + " stories" + " | " +
             (0..700).random() + " Review"
 }

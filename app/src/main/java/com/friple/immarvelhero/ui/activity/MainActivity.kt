@@ -3,6 +3,7 @@ package com.friple.immarvelhero.ui.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.friple.immarvelhero.R
 import com.friple.immarvelhero.utilits.APP_ACTIVITY
@@ -11,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     lateinit var mToolbar: Toolbar
+    lateinit var mClMainActivity: ConstraintLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         initToolbar()
 
         APP_ACTIVITY = this
+        mClMainActivity = findViewById(R.id.cl_main_activity)
     }
 
     private fun initToolbar() {

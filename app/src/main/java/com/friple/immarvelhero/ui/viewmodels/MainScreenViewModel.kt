@@ -45,9 +45,8 @@ class MainScreenViewModel : ViewModel() {
             }
             // Add offset for next new items
             offset += 20
+            function()
         }
-
-        function()
     }
 
     // Load data from BD in background
@@ -57,6 +56,7 @@ class MainScreenViewModel : ViewModel() {
             MainRepo.instance.load(offset, limit,
                 {
                     function(it.data.results)
+                    error.value = false
                 }, {
                     error.value = true
                 })

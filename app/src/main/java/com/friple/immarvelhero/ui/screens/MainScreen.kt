@@ -19,12 +19,10 @@ import com.friple.immarvelhero.R
 import com.friple.immarvelhero.databinding.ScreenMainBinding
 import com.friple.immarvelhero.network.entities.MarvelCharacter
 import com.friple.immarvelhero.ui.recyclerview.viewes.AppViewFactory
+import com.friple.immarvelhero.ui.recyclerview.viewes.BaseView
 import com.friple.immarvelhero.ui.viewmodels.MainScreenViewModel
 import com.friple.immarvelhero.utilits.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class MainScreen : Fragment(), AppHeroClickListener {
@@ -67,15 +65,33 @@ class MainScreen : Fragment(), AppHeroClickListener {
     // If we don't have connection let's go to another screen (Without internet)
     private fun internetCheck() {
         if (isOnline(APP_ACTIVITY)) {
+
+            mBinding.pbHeroesLoading.visibility = View.VISIBLE
+
             // Check data in viewModel. If null make request
             val listCharacters = mScreenViewModel.getMarvelListCharacters().value
+            val listCharacterViews = mutableListOf<BaseView>()
+
             if (listCharacters != null) {
-                mAdapter.setData(AppViewFactory.getViewType(TYPE_SCREEN_HEROES, listCharacters))
+                listCharacters.forEach { character ->
+                    listCharacterViews.add(
+                        AppViewFactory.getViewType(
+                            TYPE_SCREEN_HEROES,
+                            character
+                        )
+                    )
+                }
+                mAdapter.setData(listCharacterViews)
             } else {
                 mScreenViewModel.updateData {}
             }
         } else {
-            navTo("FRAGMENT_WITHOUT_INTERNET")
+
+            mBinding.pbHeroesLoading.visibility = View.GONE
+
+            val listCharacterViews = mutableListOf<BaseView>()
+            listCharacterViews.add(AppViewFactory.getViewType(TYPE_SCREEN_ERROR))
+            mAdapter.setData(listCharacterViews)
         }
     }
 
@@ -91,16 +107,25 @@ class MainScreen : Fragment(), AppHeroClickListener {
     private fun setObservers() {
         // Here we check data for changing
         mScreenViewModel.getMarvelListCharacters().observe(viewLifecycleOwner, { list ->
-            // Make it in background
-            CoroutineScope(Dispatchers.Unconfined).launch {
-                mAdapter.setData(list as MutableList<MarvelCharacter>)
+
+            mBinding.pbHeroesLoading.visibility = View.VISIBLE
+
+            val listCharacterViews = mutableListOf<BaseView>()
+            list.forEach { character ->
+                listCharacterViews.add(AppViewFactory.getViewType(TYPE_SCREEN_HEROES, character))
             }
+            mAdapter.setData(listCharacterViews)
         })
 
         // If error we go to another screen (Without internet)
         mScreenViewModel.getIsError().observe(viewLifecycleOwner, {
             if (it) {
-                navTo("FRAGMENT_WITHOUT_INTERNET")
+
+                mBinding.pbHeroesLoading.visibility = View.GONE
+
+                val listCharacterViews = mutableListOf<BaseView>()
+                listCharacterViews.add(AppViewFactory.getViewType(TYPE_SCREEN_ERROR, MarvelCharacter()))
+                mAdapter.setData(listCharacterViews)
             }
         })
     }
@@ -127,8 +152,10 @@ class MainScreen : Fragment(), AppHeroClickListener {
 
         // UP!!!
         mFabScrollToTop.setOnClickListener {
-            mNestedScrollView.postDelayed({
-                    mNestedScrollView.fullScroll(ScrollView.FOCUS_UP)},
+            mNestedScrollView.postDelayed(
+                {
+                    mNestedScrollView.fullScroll(ScrollView.FOCUS_UP)
+                },
                 0
             )
         }
@@ -149,7 +176,9 @@ class MainScreen : Fragment(), AppHeroClickListener {
 
                     // If we don't have internet, you know what
                     if (!isOnline(APP_ACTIVITY)) {
-                        navTo("FRAGMENT_WITHOUT_INTERNET")
+                        val listCharacterViews = mutableListOf<BaseView>()
+                        listCharacterViews.add(AppViewFactory.getViewType(TYPE_SCREEN_ERROR, MarvelCharacter()))
+                        mAdapter.setData(listCharacterViews)
                     }
                 }
             }
@@ -164,7 +193,7 @@ class MainScreen : Fragment(), AppHeroClickListener {
     }
 
     // Callback from adapter
-    override fun onHeroClick(character: MarvelCharacter, hashMap: HashMap<String, View>) {
+    override fun onClickFromItem(view: BaseView, hashMap: HashMap<String, View>) {
 
         val heroScreen = HeroScreen()
 
@@ -178,12 +207,12 @@ class MainScreen : Fragment(), AppHeroClickListener {
         transitionNameArrayList.add(1, hashMap["ivPhotoOfHero"]!!.transitionName) // ivPhotoOfHero
 
         val arguments = Bundle().apply {
-            putInt("id", character.id)
-            putString("name", character.name)
-            putString("photoUrl", character.thumbnail.path)
-            putString("extension", character.thumbnail.extension)
-            putString("bio", character.description)
-            putInt("stories", character.stories.available)
+            putInt("id", view.id)
+            putString("name", view.name)
+            putString("photoUrl", view.thumbnail.path)
+            putString("extension", view.thumbnail.extension)
+            putString("bio", view.description)
+            putInt("stories", view.stories.available)
             putFloat("rating", (hashMap["rbRatingBar"] as RatingBar).rating)
             putStringArrayList("transitionName", transitionNameArrayList)
         }
@@ -199,6 +228,13 @@ class MainScreen : Fragment(), AppHeroClickListener {
             .replace(R.id.main_container_fragment, heroScreen)
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun onClickFromItem() {
+        mScreenViewModel.updateData {
+            toDarkStatusBar()
+            isToolbarVisible(true)
+        }
     }
 
     override fun onResume() {

@@ -2,19 +2,19 @@ package com.friple.immarvelhero.utilits
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Point
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Build
+import android.util.DisplayMetrics
 import android.util.Log
+import android.view.View
+import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.friple.immarvelhero.R
-import com.friple.immarvelhero.ui.screens.FragmentWithoutInternet
-import com.friple.immarvelhero.ui.screens.MainScreen
-import java.lang.RuntimeException
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
@@ -34,6 +34,11 @@ fun ImageView.downloadAndSetImage(url: String) {
 // Get current time stamp
 fun getTimeStamp(): String {
     return (System.currentTimeMillis() / 1000).toString()
+}
+
+fun getHeightOfScreenInPx(): Int {
+    val displayMetrics: DisplayMetrics = APP_ACTIVITY.resources.displayMetrics
+    return displayMetrics.heightPixels
 }
 
 // Show toast
@@ -91,17 +96,47 @@ fun isOnline(context: Context): Boolean {
     return false
 }
 
-// Navigate to fragment
-fun Fragment.navTo(screen: String) {
+fun isToolbarVisible(visible: Boolean) {
+    if (visible) {
+        APP_ACTIVITY.supportActionBar?.show()
+    } else {
+        APP_ACTIVITY.supportActionBar?.hide()
+    }
+}
 
-    findNavController().navigate(
-         when (screen) {
-            "MAIN_SCREEN" -> R.id.action_fragmentWithoutInternet_to_mainScreen
-            "FRAGMENT_WITHOUT_INTERNET" -> R.id.action_mainScreen_to_fragmentWithoutInternet
-            else -> 0
-        },
-        null,
-        null,
-        null,
+fun toLightStatusBar() {
+    APP_ACTIVITY.window.statusBarColor = ContextCompat.getColor(APP_ACTIVITY, R.color.white)
+    APP_ACTIVITY.mClMainActivity.background = ContextCompat.getDrawable(APP_ACTIVITY, R.color.white)
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        APP_ACTIVITY.window.insetsController?.setSystemBarsAppearance(
+            APPEARANCE_LIGHT_STATUS_BARS,
+            APPEARANCE_LIGHT_STATUS_BARS
+        )
+    } else {
+        @Suppress("DEPRECATION")
+        APP_ACTIVITY.window.decorView.systemUiVisibility =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            } else {
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
+
+    }
+}
+
+fun toDarkStatusBar() {
+
+    APP_ACTIVITY.mClMainActivity.background =
+        ContextCompat.getDrawable(APP_ACTIVITY, R.color.design_default_color_primary)
+
+    APP_ACTIVITY.window.statusBarColor = ContextCompat.getColor(
+        APP_ACTIVITY,
+        R.color.design_default_color_primary
     )
+
+    // Change color of text on statusBar
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        APP_ACTIVITY.window.clearFlags(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+    }
 }

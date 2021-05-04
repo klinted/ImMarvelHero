@@ -2,11 +2,12 @@ package com.friple.immarvelhero.utilits
 
 import androidx.recyclerview.widget.DiffUtil
 import com.friple.immarvelhero.network.entities.MarvelCharacter
+import com.friple.immarvelhero.ui.recyclerview.viewes.BaseView
 
 
 class MyDiffUtil(
-    private var oldList: List<MarvelCharacter>,
-    private var newList: List<MarvelCharacter>
+    private var oldList: List<BaseView>,
+    private var newList: List<BaseView>
 
 ) : DiffUtil.Callback() {
 
