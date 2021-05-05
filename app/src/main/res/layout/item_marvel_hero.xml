@@ -12,7 +12,7 @@
         android:layout_marginStart="@dimen/horizontal_big_margin"
         android:layout_marginTop="@dimen/vertical_normal_margin"
         app:cardCornerRadius="8dp"
-        app:cardElevation="5dp"
+        app:cardElevation="9dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -41,7 +41,7 @@
         android:id="@id/cl_item_text_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:elevation="6dp"
+        android:elevation="9dp"
         app:layout_constraintEnd_toEndOf="@+id/cv_main_back_card"
         app:layout_constraintStart_toEndOf="@+id/cv_item_hero_card"
         app:layout_constraintTop_toTopOf="@+id/cv_main_back_card">
@@ -111,7 +111,7 @@
         android:layout_marginEnd="@dimen/horizontal_normal_margin"
         android:layout_marginBottom="@dimen/vertical_normal_margin"
         app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
+        app:cardElevation="8dp"
         app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

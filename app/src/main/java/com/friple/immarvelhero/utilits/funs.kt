@@ -100,25 +100,43 @@ fun isOnline(context: Context): Boolean {
 
 fun toLightTheme() {
 
-    APP_ACTIVITY.apply {
-        mToolbar.background = ContextCompat.getDrawable(APP_ACTIVITY, R.color.white)
-        mToolbar.elevation = 0f
-        window.statusBarColor = ContextCompat.getColor(APP_ACTIVITY, R.color.white)
-        mClMainActivity.background = ContextCompat.getDrawable(APP_ACTIVITY, R.color.white)
-        mImageView.visibility = View.GONE
-        mFmDarker.background = ContextCompat.getDrawable(APP_ACTIVITY, android.R.color.transparent)
+    APP_ACTIVITY.mToolbar.background = ContextCompat.getDrawable(APP_ACTIVITY, R.color.white)
+
+    APP_ACTIVITY.window.statusBarColor = ContextCompat.getColor(APP_ACTIVITY, R.color.white)
+
+    APP_ACTIVITY.mClMainActivity.background = ContextCompat.getDrawable(APP_ACTIVITY, R.color.white)
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        APP_ACTIVITY.window.insetsController?.setSystemBarsAppearance(
+            APPEARANCE_LIGHT_STATUS_BARS,
+            APPEARANCE_LIGHT_STATUS_BARS
+        )
+    } else {
+        @Suppress("DEPRECATION")
+        APP_ACTIVITY.window.decorView.systemUiVisibility =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            } else {
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
+
     }
 }
 
 fun toDarkTheme() {
 
-    APP_ACTIVITY.apply {
-        mToolbar.background = ContextCompat.getDrawable(APP_ACTIVITY, R.color.red)
-        mToolbar.elevation = 7f
-        mClMainActivity.background = ContextCompat.getDrawable(APP_ACTIVITY, R.color.red)
-        window.statusBarColor = ContextCompat.getColor(APP_ACTIVITY, R.color.red)
-        mImageView.visibility = View.VISIBLE
-        mFmDarker.background = ContextCompat.getDrawable(APP_ACTIVITY, R.color.unselected_black)
+    APP_ACTIVITY.mToolbar.background =
+        ContextCompat.getDrawable(APP_ACTIVITY, R.color.red)
+
+    APP_ACTIVITY.mClMainActivity.background =
+        ContextCompat.getDrawable(APP_ACTIVITY, R.color.red)
+
+    APP_ACTIVITY.window.statusBarColor =
+        ContextCompat.getColor(APP_ACTIVITY, R.color.unselected_black)
+
+    // Change color of text on statusBar
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        APP_ACTIVITY.window.clearFlags(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
     }
 }
 
