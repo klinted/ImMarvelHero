@@ -61,8 +61,6 @@
 
                         <TextView
                             android:transitionName="tv_screen_hero_name_TN"
-
-
                             android:id="@id/tv_hero_name"
                             style="@style/TitleOfCardTextView"
                             android:text="@string/im_iron_man"

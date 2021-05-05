@@ -15,7 +15,8 @@ fun setTransitionNames(mapOfView: Map<String, View>, id: Int) {
 
 fun randFloat(): Float {
     val rand = Random()
-    return rand.nextFloat() * (0f - 5f) + 0f
+    val f = rand.nextFloat() * (5f - 0f) + 0f
+    return f
 }
 
 fun makeRatingString(ratingBar: RatingBar): CharSequence {
