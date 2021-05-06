@@ -1,6 +1,6 @@
-package com.friple.immarvelhero.network
+package com.friple.data.services
 
-import com.friple.immarvelhero.utilits.*
+import com.friple.data.utils.*
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 // TODO: 4/25/2021 Make it universal
 
-object ApiService {
+object ApiProvider {
 
         fun getMarvelService(): MarvelService {
             val logging = HttpLoggingInterceptor()

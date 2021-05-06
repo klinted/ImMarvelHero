@@ -3,7 +3,7 @@ package com.friple.immarvelhero.utilits.states
 import android.view.View
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
-import com.friple.immarvelhero.network.entities.MarvelCharacter
+import com.friple.domain.entities.heroes.MarvelCharacter
 import com.friple.immarvelhero.ui.adapters.MainScreenAdapter
 import com.friple.immarvelhero.ui.recyclerview.views.AppViewFactory
 import com.friple.immarvelhero.ui.recyclerview.views.BaseView

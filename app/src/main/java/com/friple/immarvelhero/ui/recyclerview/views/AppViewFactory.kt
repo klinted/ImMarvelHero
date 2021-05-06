@@ -1,6 +1,6 @@
 package com.friple.immarvelhero.ui.recyclerview.views
 
-import com.friple.immarvelhero.network.entities.MarvelCharacter
+import com.friple.domain.entities.heroes.MarvelCharacter
 import com.friple.immarvelhero.utilits.TYPE_SCREEN_ERROR
 import com.friple.immarvelhero.utilits.TYPE_SCREEN_HEROES
 

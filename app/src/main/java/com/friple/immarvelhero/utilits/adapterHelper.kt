@@ -2,7 +2,6 @@ package com.friple.immarvelhero.utilits
 
 import android.view.View
 import android.widget.RatingBar
-import com.friple.immarvelhero.network.entities.MarvelCharacter
 import java.util.*
 
 

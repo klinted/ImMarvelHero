@@ -33,11 +33,6 @@ fun ImageView.downloadAndSetImage(url: String) {
         .into(this)
 }
 
-// Get current time stamp
-fun getTimeStamp(): String {
-    return (System.currentTimeMillis() / 1000).toString()
-}
-
 fun getHeightOfScreenInPx(): Int {
     val displayMetrics: DisplayMetrics = APP_ACTIVITY.resources.displayMetrics
     return displayMetrics.heightPixels
@@ -46,29 +41,6 @@ fun getHeightOfScreenInPx(): Int {
 // Show toast
 fun showToast(message: String) {
     Toast.makeText(APP_ACTIVITY, message, Toast.LENGTH_LONG).show()
-}
-
-// Crypter
-fun String.toMd5(): String {
-    val MD5 = "MD5"
-    try {
-        // Create MD5 Hash
-        val digest: MessageDigest = MessageDigest.getInstance(MD5)
-        digest.update(this.toByteArray())
-        val messageDigest: ByteArray = digest.digest()
-
-        // Create Hex String
-        val hexString = StringBuilder()
-        for (aMessageDigest in messageDigest) {
-            var h = Integer.toHexString(0xFF and aMessageDigest.toInt())
-            while (h.length < 2) h = "0$h"
-            hexString.append(h)
-        }
-        return hexString.toString()
-    } catch (e: NoSuchAlgorithmException) {
-        e.printStackTrace()
-    }
-    return ""
 }
 
 // Internet checker

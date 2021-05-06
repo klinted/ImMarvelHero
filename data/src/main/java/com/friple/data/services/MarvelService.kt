@@ -1,6 +1,6 @@
-package com.friple.immarvelhero.network
+package com.friple.data.services
 
-import com.friple.immarvelhero.network.entities.MarvelResponse
+import com.friple.domain.entities.heroes.MarvelResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

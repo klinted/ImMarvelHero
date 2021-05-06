@@ -1,6 +1,6 @@
 package com.friple.immarvelhero.utilits.states
 
-import com.friple.immarvelhero.network.entities.MarvelCharacter
+import com.friple.domain.entities.heroes.MarvelCharacter
 
 interface AppStatesController {
 
