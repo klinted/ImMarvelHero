@@ -1,4 +1,4 @@
-package com.friple.immarvelhero.utilits
+package com.friple.immarvelhero.utilits.adapter
 
 import android.view.View
 import com.friple.immarvelhero.ui.recyclerview.views.BaseView

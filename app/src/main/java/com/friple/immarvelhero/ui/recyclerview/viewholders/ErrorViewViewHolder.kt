@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.friple.immarvelhero.R
 import com.friple.immarvelhero.ui.recyclerview.views.BaseView
 import com.friple.immarvelhero.utilits.*
+import com.friple.immarvelhero.utilits.adapter.AppHeroClickListener
 
 class ErrorViewViewHolder(view: View) : RecyclerView.ViewHolder(view), BaseViewHolder {
 

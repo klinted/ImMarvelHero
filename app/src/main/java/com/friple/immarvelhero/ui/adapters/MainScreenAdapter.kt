@@ -7,8 +7,8 @@ import com.friple.immarvelhero.ui.recyclerview.views.BaseView
 import com.friple.immarvelhero.ui.recyclerview.viewholders.AppHolderFactory
 import com.friple.immarvelhero.ui.recyclerview.viewholders.BaseViewHolder
 import com.friple.immarvelhero.utilits.*
-
-// TODO: 4/25/2021 Divide adapter to viewHolders and views
+import com.friple.immarvelhero.utilits.adapter.AppHeroClickListener
+import com.friple.immarvelhero.utilits.adapter.MyDiffUtil
 
 class MainScreenAdapter(
     private val listener: AppHeroClickListener

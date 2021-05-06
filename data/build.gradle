@@ -47,10 +47,15 @@ dependencies {
     def retrofit_version = "2.9.0"
     // Interceptor
     def interceptor_version = "3.9.0"
+    // Coroutines
+    def coroutines_version = "1.4.3"
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 }

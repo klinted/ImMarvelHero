@@ -20,7 +20,7 @@ import com.friple.immarvelhero.ui.recyclerview.views.BaseView
 import com.friple.immarvelhero.ui.viewmodels.BaseViewModel.State
 import com.friple.immarvelhero.ui.viewmodels.MainScreenViewModel
 import com.friple.immarvelhero.utilits.APP_ACTIVITY
-import com.friple.immarvelhero.utilits.AppHeroClickListener
+import com.friple.immarvelhero.utilits.adapter.AppHeroClickListener
 import com.friple.immarvelhero.utilits.AppNestedScrollView
 import com.friple.immarvelhero.utilits.goToTop
 import com.friple.immarvelhero.utilits.states.AppStatesController
@@ -70,7 +70,7 @@ class MainScreen : Fragment(), AppHeroClickListener {
 
     private fun setObservers() {
 
-        mScreenViewModel.getState().observe(viewLifecycleOwner, { state ->
+        mScreenViewModel.state.observe(viewLifecycleOwner, { state ->
             when (state) {
                 State.CREATED -> {
                     mAppStatesMainController.onCreated()
@@ -79,7 +79,7 @@ class MainScreen : Fragment(), AppHeroClickListener {
                     mAppStatesMainController.onLoading()
                 }
                 State.SUCCESS -> {
-                    mScreenViewModel.getMarvelListCharacters().value?.let { characterList ->
+                    mScreenViewModel.marvelListCharacters.value?.let { characterList ->
                         mAppStatesMainController.onSuccess(characterList)
                     }
                 }
@@ -123,7 +123,9 @@ class MainScreen : Fragment(), AppHeroClickListener {
 
             // Check when load data
             if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
-                mScreenViewModel.updateData()
+                if (mScreenViewModel.state.value != State.LOADING) {
+                    mScreenViewModel.updateData()
+                }
             }
 
             // Visibility of FAB

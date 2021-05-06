@@ -23,7 +23,7 @@ class AppStatesMainControllerImpl(
         mNestedScrollView.goToTop()
 
         if (isOnline(APP_ACTIVITY)) {
-            val listCharacter = mViewModel.getMarvelListCharacters().value
+            val listCharacter = mViewModel.marvelListCharacters.value
 
             // Check data in viewModel. If null make request
             if (listCharacter != null) {

@@ -10,6 +10,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.friple.immarvelhero.ui.recyclerview.views.BaseView
 import com.friple.immarvelhero.utilits.*
+import com.friple.immarvelhero.utilits.adapter.*
 import kotlinx.android.synthetic.main.item_marvel_hero.view.*
 
 class HeroesViewViewHolder(view: View) : RecyclerView.ViewHolder(view), BaseViewHolder  {

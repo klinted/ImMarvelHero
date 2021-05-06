@@ -20,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:id="@+id/iv_bg_iron_man"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
@@ -30,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/main_toolbar" />
 
     <FrameLayout
-        android:id="@+id/frameLayout"
+        android:id="@+id/fl_darker"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/unselected_black"

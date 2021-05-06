@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
@@ -57,7 +58,7 @@ dependencies {
 
     // NavComponent
     def nav_version = "2.3.5"
-    // Coroutines
+    // Glide
     def glide_version = "4.12.0"
     // Coroutines
     def coroutines_version = "1.4.3"
@@ -69,5 +70,4 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide_version"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
-
 }

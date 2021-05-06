@@ -8,11 +8,10 @@ open class BaseViewModel : ViewModel() {
 
     enum class State { CREATED, LOADING, SUCCESS, ERROR }
 
-    private val state = MutableLiveData(State.CREATED)
+    private val _state = MutableLiveData(State.CREATED)
+    val state: LiveData<State> = _state
 
     protected fun setState(state: State) {
-        this.state.value = state
+        _state.value = state
     }
-
-    fun getState(): LiveData<State> = state
 }

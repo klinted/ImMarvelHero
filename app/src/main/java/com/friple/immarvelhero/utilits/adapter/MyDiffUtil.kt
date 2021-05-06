@@ -1,4 +1,4 @@
-package com.friple.immarvelhero.utilits
+package com.friple.immarvelhero.utilits.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.friple.immarvelhero.ui.recyclerview.views.BaseView

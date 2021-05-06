@@ -2,15 +2,17 @@ package com.friple.immarvelhero.ui.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.friple.data.repository.HeroesRepositoryImpl
 import com.friple.domain.entities.ApiParams
+import com.friple.domain.entities.AppResult
 import com.friple.domain.entities.heroes.MarvelCharacter
-import com.friple.domain.interactors.GetHeroesUseCase
 import com.friple.domain.repositories.HeroesRepository
-import com.friple.immarvelhero.ui.presenter.HeroPresenter
+import com.friple.domain.usecases.GetHeroesUseCase
 import com.friple.immarvelhero.utilits.showToast
-
-// TODO: 4/25/2021 Change type of multithreading
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainScreenViewModel : BaseViewModel() {
 
@@ -23,39 +25,46 @@ class MainScreenViewModel : BaseViewModel() {
 
     private var params = ApiParams(offset, limit)
 
-    private val mHeroesRepository: HeroesRepository = HeroesRepositoryImpl.instance
-
+    private val mHeroesRepository: HeroesRepository = HeroesRepositoryImpl.getInstance(Dispatchers.IO)
     private val mUseCase = GetHeroesUseCase(mHeroesRepository)
 
-    private val mHeroPresenter = HeroPresenter(mUseCase)
+    private val _marvelListCharacters = MutableLiveData<List<MarvelCharacter>>()
+    val marvelListCharacters: LiveData<List<MarvelCharacter>> = _marvelListCharacters
 
-    private val marvelListCharacters = MutableLiveData<List<MarvelCharacter>>()
-
-    fun getMarvelListCharacters(): LiveData<List<MarvelCharacter>> {
-        return marvelListCharacters
-    }
-
-    // Load data from BD. Then we check marvel list. If it's empty we get it with new data.
-    // Or get old data and plus new to it
-    // Then call to function (Lambda)
+    // Load data from BD. Then we check marvel list.
     fun updateData() {
         setState(State.LOADING)
 
-        mHeroPresenter.getHeroes(params,
-            {
-                if (marvelListCharacters.value == null) {
-                    marvelListCharacters.value = it
-                } else {
-                    marvelListCharacters.value = marvelListCharacters.value!!.plus(it)
-                }
-                // Add offset for next new items
-                params.offset += 20
+        viewModelScope.launch {
+            getHeroesAsync()
+        }
+    }
 
-                setState(State.SUCCESS)
-            },
-            { errorMessage ->
-                showToast(errorMessage)
-                setState(State.ERROR)
-            })
+    private suspend fun getHeroesAsync() {
+        when (val result = mUseCase.invoke(params)) {
+            is AppResult.Success -> onSuccess(result.data.data.results)
+            is AppResult.Error -> onError(result.throwable.message)
+        }
+    }
+
+    // If _marvelListCharacters is empty we get it with new data.
+    // Or get old data and plus new to it
+    private fun onSuccess(listOfMarvelChars: List<MarvelCharacter>) {
+        if (_marvelListCharacters.value == null) {
+            _marvelListCharacters.value = listOfMarvelChars
+        } else {
+            _marvelListCharacters.value = _marvelListCharacters.value!!.plus(listOfMarvelChars)
+        }
+
+        // Add offset for next new items
+        params.offset += 20
+        setState(State.SUCCESS)
+    }
+
+    private fun onError(errorMessage: String?) {
+        errorMessage?.let {
+            showToast(errorMessage)
+            setState(State.ERROR)
+        }
     }
 }
