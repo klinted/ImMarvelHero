@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.helper.widget.Layer
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.friple.immarvelhero.R
@@ -18,9 +19,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     lateinit var mToolbar: Toolbar
-    lateinit var mClMainActivity: ConstraintLayout
-    lateinit var mImageView: ImageView
-    lateinit var mFmDarker: FrameLayout
+    lateinit var mLayerBackground: Layer
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,9 +31,7 @@ class MainActivity : AppCompatActivity() {
         initToolbar()
         initStatusBar()
 
-        mClMainActivity = findViewById(R.id.cl_main_activity)
-        mImageView = findViewById(R.id.iv_bg_iron_man)
-        mFmDarker = findViewById(R.id.fl_darker)
+        mLayerBackground = findViewById(R.id.layer_bg)
     }
 
     private fun initToolbar() {

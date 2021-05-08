@@ -1,7 +1,7 @@
 package com.friple.immarvelhero.utilits.adapter
 
 import android.view.View
-import android.widget.RatingBar
+import com.friple.immarvelhero.ui.recyclerview.views.BaseView
 import java.util.*
 
 
@@ -12,16 +12,18 @@ fun setTransitionNames(mapOfView: Map<String, View>, id: Int) {
     }
 }
 
-fun randFloat(): Float {
+fun randFloat(from: Float, to: Float): Float {
     val rand = Random()
-    return rand.nextFloat() * (0f - 5f) + 0f
+    return rand.nextFloat() * (to - from) + from
 }
 
-fun makeRatingString(ratingBar: RatingBar): CharSequence {
-    return ratingBar.rating.toString() + " Rating"
+fun makeRatingString(rating: Float): CharSequence {
+    return "$rating Rating"
 }
 
 fun makeString(string: String): CharSequence {
     return string + " stories" + " | " +
             (0..700).random() + " Review"
 }
+
+fun makeRef(view: BaseView) = "${view.thumbnail.path}/standard_fantastic.${view.thumbnail.extension}"

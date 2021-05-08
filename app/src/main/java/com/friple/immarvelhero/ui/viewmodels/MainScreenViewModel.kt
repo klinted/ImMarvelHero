@@ -9,21 +9,15 @@ import com.friple.domain.entities.AppResult
 import com.friple.domain.entities.heroes.MarvelCharacter
 import com.friple.domain.repositories.HeroesRepository
 import com.friple.domain.usecases.GetHeroesUseCase
+import com.friple.immarvelhero.ui.recyclerview.views.BaseView
+import com.friple.immarvelhero.utilits.TYPE_SCREEN_HEROES
 import com.friple.immarvelhero.utilits.showToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainScreenViewModel : BaseViewModel() {
 
-    // For BD
-    // Offset for getting items
-    private var offset = 0
-
-    // Limit of getting items
-    private var limit = 20
-
-    private var params = ApiParams(offset, limit)
+    private var params = ApiParams(0, 20)
 
     private val mHeroesRepository: HeroesRepository = HeroesRepositoryImpl.getInstance(Dispatchers.IO)
     private val mUseCase = GetHeroesUseCase(mHeroesRepository)
@@ -31,12 +25,20 @@ class MainScreenViewModel : BaseViewModel() {
     private val _marvelListCharacters = MutableLiveData<List<MarvelCharacter>>()
     val marvelListCharacters: LiveData<List<MarvelCharacter>> = _marvelListCharacters
 
+    val typeOfScreen = MutableLiveData<Int>()
+    val recentDataOfDetailScreen = MutableLiveData<MarvelCharacter>()
+
     // Load data from BD. Then we check marvel list.
     fun updateData() {
-        setState(State.LOADING)
+        if (typeOfScreen.value == TYPE_SCREEN_HEROES) {
+            setState(State.LOADING)
 
-        viewModelScope.launch {
-            getHeroesAsync()
+            viewModelScope.launch {
+                getHeroesAsync()
+            }
+        } else {
+            typeOfScreen.value = TYPE_SCREEN_HEROES
+            setState(State.SUCCESS)
         }
     }
 

@@ -7,13 +7,15 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.view.drawToBitmap
 import androidx.recyclerview.widget.RecyclerView
+import com.friple.domain.entities.heroes.MarvelCharacter
 import com.friple.immarvelhero.ui.recyclerview.views.BaseView
 import com.friple.immarvelhero.utilits.*
 import com.friple.immarvelhero.utilits.adapter.*
 import kotlinx.android.synthetic.main.item_marvel_hero.view.*
 
-class HeroesViewViewHolder(view: View) : RecyclerView.ViewHolder(view), BaseViewHolder  {
+class HeroesViewViewHolder(view: View) : RecyclerView.ViewHolder(view), BaseViewHolder {
 
     // Views
     private val ivPhotoOfHero: ImageView = view.iv_hero_photo
@@ -29,35 +31,28 @@ class HeroesViewViewHolder(view: View) : RecyclerView.ViewHolder(view), BaseView
 
     override fun drawMarvelHero(view: BaseView) {
 
-            // For animation
-            hashMapOfViews["cvMainBackCard"] = cvMainBackCard
-            hashMapOfViews["ivPhotoOfHero"] = ivPhotoOfHero
-            hashMapOfViews["rbRatingBar"] = rbRatingBar
+        // For animation
+        hashMapOfViews["cvMainBackCard"] = cvMainBackCard
+        hashMapOfViews["ivPhotoOfHero"] = ivPhotoOfHero
+        hashMapOfViews["rbRatingBar"] = rbRatingBar
 
-            // Set transition names to views
-            setTransitionNames(hashMapOfViews, view.id)
+        // Set transition names to views
+        setTransitionNames(hashMapOfViews, view.id)
 
-            // Our work....
-            tvNameOfHero.text = view.name
-            tvStories.text = makeString(view.stories.available.toString())
-            rbRatingBar.rating = randFloat()
-            tvRatingNum.text = makeRatingString(rbRatingBar)
-
-            val url =
-                "${view.thumbnail.path}/standard_fantastic.${view.thumbnail.extension}"
-
-            // If we have bitmap we set it, else download
-            if (HERO_BITMAP != null && ID_FOR_BITMAP == view.id.toString()) {
-                ivPhotoOfHero.setImageBitmap(HERO_BITMAP)
-                Log.d("TAGGG", "drawMarvelHero: 11111")
-            } else {
-                ivPhotoOfHero.downloadAndSetImage(url)
-            }
+        // Our work....
+        tvNameOfHero.text = view.name
+        tvStories.text = makeString(view.stories.available.toString())
+        rbRatingBar.rating = randFloat(0f, 5f)
+        tvRatingNum.text = makeRatingString(rbRatingBar.rating)
+        ivPhotoOfHero.downloadAndSetImage(makeRef(view))
     }
 
     override fun onAttach(view: BaseView, listener: AppHeroClickListener) {
         flMainButton.setOnClickListener {
-            listener.onClickFromItem(view, hashMapOfViews)
+            ID_OF_HERO = this.adapterPosition
+            listener.onClickFromItem(
+                MarvelCharacter(view.id, view.name, view.description, view.stories, view.thumbnail)
+            )
         }
     }
 

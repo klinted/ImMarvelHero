@@ -17,6 +17,9 @@ interface BaseView {
 
         val SCREEN_ERROR: Int
             get() = 1
+
+        val SCREEN_HERO_DETAIL: Int
+            get() = 2
     }
 
     fun getTypeOfView(): Int

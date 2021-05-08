@@ -13,7 +13,7 @@
     <item name="view_item_button" type="id" />
     <item name="fl_item_button" type="id" />
     <item name="cl_item_text_container" type="id" />
-    <item name="rating_bar_of_hero" type="id" />
+    <item name="rb_of_hero_detail" type="id" />
     <item name="fl_main_button2" type="id" />
     <item name="cv_main_back_card" type="id" />
 </resources>

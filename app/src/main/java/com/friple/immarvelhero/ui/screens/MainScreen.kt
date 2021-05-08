@@ -1,37 +1,29 @@
 package com.friple.immarvelhero.ui.screens
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.RatingBar
-import androidx.core.view.drawToBitmap
 import androidx.core.widget.NestedScrollView
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.friple.immarvelhero.R
+import com.friple.domain.entities.heroes.MarvelCharacter
 import com.friple.immarvelhero.databinding.ScreenMainBinding
 import com.friple.immarvelhero.ui.adapters.MainScreenAdapter
+import com.friple.immarvelhero.ui.recyclerview.views.AppViewFactory
 import com.friple.immarvelhero.ui.recyclerview.views.BaseView
 import com.friple.immarvelhero.ui.viewmodels.BaseViewModel.State
 import com.friple.immarvelhero.ui.viewmodels.MainScreenViewModel
-import com.friple.immarvelhero.utilits.APP_ACTIVITY
+import com.friple.immarvelhero.utilits.*
 import com.friple.immarvelhero.utilits.adapter.AppHeroClickListener
-import com.friple.immarvelhero.utilits.AppNestedScrollView
-import com.friple.immarvelhero.utilits.goToTop
 import com.friple.immarvelhero.utilits.states.AppStatesController
 import com.friple.immarvelhero.utilits.states.AppStatesMainControllerImpl
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class MainScreen : Fragment(), AppHeroClickListener {
-
-    private lateinit var mBinding: ScreenMainBinding
-    private lateinit var mScreenViewModel: MainScreenViewModel
+class MainScreen : BaseFragment<ScreenMainBinding, MainScreenViewModel>(
+    ScreenMainBinding::inflate,
+    MainScreenViewModel::class.java
+), AppHeroClickListener {
 
     private lateinit var mAppStatesMainController: AppStatesController
 
@@ -45,42 +37,36 @@ class MainScreen : Fragment(), AppHeroClickListener {
     private lateinit var mFabScrollToTop: FloatingActionButton
     private lateinit var mProgressBar: ProgressBar
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        // Init adapter
-        mAdapter = MainScreenAdapter(this)
-
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.screen_main, container, false)
-
-        mScreenViewModel = ViewModelProvider(this).get(MainScreenViewModel::class.java)
-
-        mBinding.viewModel = mScreenViewModel
-
-        return mBinding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        mAdapter = MainScreenAdapter(this)
+        binding.viewModel = viewModel
 
-        setObservers()
         initFields()
+        setObservers()
         initRecyclerView()
     }
 
     private fun setObservers() {
 
-        mScreenViewModel.state.observe(viewLifecycleOwner, { state ->
+        viewModel.state.observe(viewLifecycleOwner, { state ->
             when (state) {
                 State.CREATED -> {
+                    viewModel.typeOfScreen.value = TYPE_SCREEN_HEROES
                     mAppStatesMainController.onCreated()
                 }
                 State.LOADING -> {
                     mAppStatesMainController.onLoading()
                 }
                 State.SUCCESS -> {
-                    mScreenViewModel.marvelListCharacters.value?.let { characterList ->
-                        mAppStatesMainController.onSuccess(characterList)
+                    when (viewModel.typeOfScreen.value) {
+                        TYPE_SCREEN_HEROES -> {
+                            viewModel.marvelListCharacters.value?.let { characterList ->
+                                mAppStatesMainController.onSuccess(characterList)
+                            }
+                        }
+                        TYPE_SCREEN_HERO_DETAIL -> {
+                            openDetailScreen(viewModel.recentDataOfDetailScreen.value!!)
+                        }
                     }
                 }
                 State.ERROR -> {
@@ -94,20 +80,20 @@ class MainScreen : Fragment(), AppHeroClickListener {
     }
 
     private fun initFields() {
-        mProgressBar = mBinding.pbHeroesLoading
+        mProgressBar = binding.pbHeroesLoading
 
         // Init for recycle
-        mNestedScrollView = mBinding.nsvContainer
-        mRecyclerView = mBinding.rvMarvelHeroes
+        mNestedScrollView = binding.nsvContainer
+        mRecyclerView = binding.rvMarvelHeroes
 
-        mLayoutManager = LinearLayoutManager(APP_ACTIVITY)
+        mLayoutManager = LinearSmoothScroller(APP_ACTIVITY, RecyclerView.VERTICAL, false)
 
         // For states
         mAppStatesMainController =
-            AppStatesMainControllerImpl(mProgressBar, mNestedScrollView, mAdapter, mScreenViewModel)
+            AppStatesMainControllerImpl(mProgressBar, mNestedScrollView, mAdapter, viewModel)
 
         // Init for views
-        mFabScrollToTop = mBinding.fabScrollToTop
+        mFabScrollToTop = binding.fabScrollToTop
 
         // UP!!!
         mFabScrollToTop.setOnClickListener { mNestedScrollView.goToTop() }
@@ -117,14 +103,15 @@ class MainScreen : Fragment(), AppHeroClickListener {
 
         mRecyclerView.adapter = mAdapter
         mRecyclerView.layoutManager = mLayoutManager
-        mRecyclerView.setItemViewCacheSize(10)
 
         mNestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
 
             // Check when load data
             if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
-                if (mScreenViewModel.state.value != State.LOADING) {
-                    mScreenViewModel.updateData()
+                if (viewModel.state.value != State.LOADING &&
+                    viewModel.typeOfScreen.value == TYPE_SCREEN_HEROES
+                ) {
+                    viewModel.updateData()
                 }
             }
 
@@ -134,46 +121,37 @@ class MainScreen : Fragment(), AppHeroClickListener {
     }
 
     // Callback from adapter
-    override fun onClickFromItem(view: BaseView, hashMap: HashMap<String, View>) {
+    override fun onClickFromItem() {
+        APP_ACTIVITY.title = "Home"
 
-        // For anim
-        val p1 = hashMap["cvMainBackCard"]!!
-        val p2 = hashMap["ivPhotoOfHero"]!!
+        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        val transitionNameArrayList = arrayListOf<String>()
+        APP_ACTIVITY.mLayerBackground.visibility = View.VISIBLE
 
-        transitionNameArrayList.add(0, hashMap["cvMainBackCard"]!!.transitionName) // cvMainBackCard
-        transitionNameArrayList.add(1, hashMap["ivPhotoOfHero"]!!.transitionName) // ivPhotoOfHero
-
-        val arguments = Bundle().apply {
-            putInt("id", view.id)
-            putString("name", view.name)
-            putString("photoUrl", view.thumbnail.path)
-            putString("extension", view.thumbnail.extension)
-            putString("bio", view.description)
-            putInt("stories", view.stories.available)
-            putFloat("rating", (hashMap["rbRatingBar"] as RatingBar).rating)
-            putStringArrayList("transitionName", transitionNameArrayList)
-        }
-
-        val heroScreen = HeroScreen()
-
-        // Pass fields to hero screen
-        heroScreen.arguments = arguments
-        heroScreen.bitmapImage = hashMap["ivPhotoOfHero"]!!.drawToBitmap()
-
-        // TODO: 4/25/2021  Make it by nav Component
-        APP_ACTIVITY.supportFragmentManager.beginTransaction()
-            .addSharedElement(p1, transitionNameArrayList[0])
-            .addSharedElement(p2, transitionNameArrayList[1])
-            .replace(R.id.main_container_fragment, heroScreen)
-            .addToBackStack(null)
-            .commit()
+        viewModel.updateData()
     }
 
     // Callback from adapter
-    override fun onClickFromItem() {
-        mScreenViewModel.updateData()
+    override fun onClickFromItem(character: MarvelCharacter) {
+        openDetailScreen(character)
+    }
+
+    private fun openDetailScreen(character: MarvelCharacter) {
+
+        APP_ACTIVITY.title = character.name
+
+        APP_ACTIVITY.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        APP_ACTIVITY.mLayerBackground.visibility = View.INVISIBLE
+
+        val listCharacterViews = mutableListOf<BaseView>()
+
+        listCharacterViews.add(AppViewFactory.getViewType(TYPE_SCREEN_HERO_DETAIL, character))
+
+        viewModel.typeOfScreen.value = TYPE_SCREEN_HERO_DETAIL
+        viewModel.recentDataOfDetailScreen.value = character
+
+        mAdapter.setData(listCharacterViews)
     }
 
     override fun onResume() {

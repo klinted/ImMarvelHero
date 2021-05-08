@@ -76,9 +76,7 @@ fun toLightTheme() {
         mToolbar.background = ContextCompat.getDrawable(APP_ACTIVITY, R.color.white)
         mToolbar.elevation = 0f
         window.statusBarColor = ContextCompat.getColor(APP_ACTIVITY, R.color.white)
-        mClMainActivity.background = ContextCompat.getDrawable(APP_ACTIVITY, R.color.white)
-        mImageView.visibility = View.GONE
-        mFmDarker.background = ContextCompat.getDrawable(APP_ACTIVITY, android.R.color.transparent)
+        mLayerBackground.visibility = View.GONE
     }
 }
 
@@ -87,10 +85,8 @@ fun toDarkTheme() {
     APP_ACTIVITY.apply {
         mToolbar.background = ContextCompat.getDrawable(APP_ACTIVITY, R.color.red)
         mToolbar.elevation = 7f
-        mClMainActivity.background = ContextCompat.getDrawable(APP_ACTIVITY, R.color.red)
         window.statusBarColor = ContextCompat.getColor(APP_ACTIVITY, R.color.red)
-        mImageView.visibility = View.VISIBLE
-        mFmDarker.background = ContextCompat.getDrawable(APP_ACTIVITY, R.color.unselected_black)
+        mLayerBackground.visibility = View.VISIBLE
     }
 
     // Change color of text on statusBar

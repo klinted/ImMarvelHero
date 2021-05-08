@@ -15,6 +15,11 @@ object AppHolderFactory {
                         .inflate(R.layout.item_marvel_hero, parent, false)
                     HeroesViewViewHolder(view)
                 }
+                BaseView.SCREEN_HERO_DETAIL -> {
+                    val view = LayoutInflater.from(parent.context)
+                        .inflate(R.layout.screen_hero, parent, false)
+                    HeroDetailViewHolder(view)
+                }
                 BaseView.SCREEN_ERROR -> {
                     val view = LayoutInflater.from(parent.context)
                         .inflate(R.layout.fragment_without_internet, parent, false)

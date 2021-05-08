@@ -7,6 +7,6 @@ lateinit var APP_ACTIVITY: MainActivity
 
 const val TYPE_SCREEN_HEROES = 0
 const val TYPE_SCREEN_ERROR = 1
+const val TYPE_SCREEN_HERO_DETAIL = 2
 
-var HERO_BITMAP: Bitmap? = null
-var ID_FOR_BITMAP: String? = null
+var ID_OF_HERO: Int? = null

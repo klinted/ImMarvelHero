@@ -1,6 +1,8 @@
 package com.friple.immarvelhero.ui.adapters
 
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.friple.immarvelhero.ui.recyclerview.views.BaseView
@@ -21,19 +23,23 @@ class MainScreenAdapter(
     fun setData(newListMarvelViewCache: MutableList<BaseView>) {
 
         when (newListMarvelViewCache[0].getTypeOfView()) {
-            TYPE_SCREEN_HEROES -> {
-                val diffUtil = MyDiffUtil(mListHeroesCache, newListMarvelViewCache)
-                val diffResults = DiffUtil.calculateDiff(diffUtil)
-                mListHeroesCache = newListMarvelViewCache
-                diffResults.dispatchUpdatesTo(this)
-            }
-            TYPE_SCREEN_ERROR -> {
-                mListHeroesCache.clear()
-                mListHolders.clear()
-                mListHeroesCache = newListMarvelViewCache
-                notifyDataSetChanged()
-            }
+            TYPE_SCREEN_HEROES -> checkAndAddByDiff(newListMarvelViewCache)
+            else -> clearAndAdd(newListMarvelViewCache)
         }
+    }
+
+    private fun clearAndAdd(newListMarvelViewCache: MutableList<BaseView>) {
+        mListHeroesCache.clear()
+        mListHolders.clear()
+        mListHeroesCache = newListMarvelViewCache
+        notifyDataSetChanged()
+    }
+
+    private fun checkAndAddByDiff(newListMarvelViewCache: MutableList<BaseView>) {
+        val diffUtil = MyDiffUtil(mListHeroesCache, newListMarvelViewCache)
+        val diffResults = DiffUtil.calculateDiff(diffUtil)
+        mListHeroesCache = newListMarvelViewCache
+        diffResults.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

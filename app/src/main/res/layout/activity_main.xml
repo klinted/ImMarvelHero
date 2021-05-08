@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/red"
+    android:background="@color/white"
     tools:context=".ui.activity.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -30,11 +30,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_toolbar" />
 
-    <FrameLayout
-        android:id="@+id/fl_darker"
+    <View
+        android:id="@+id/view_darker"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/unselected_black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_toolbar" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,5 +58,15 @@
             app:navGraph="@navigation/main_nav_container" />
 
     </FrameLayout>
+
+    <androidx.constraintlayout.helper.widget.Layer
+        android:id="@+id/layer_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="view_darker,iv_bg_iron_man"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
