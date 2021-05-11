@@ -15,6 +15,7 @@ import com.friple.immarvelhero.utilits.showToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+// TODO: 5/11/2021 Make DI
 class MainScreenViewModel : BaseViewModel() {
 
     private var params = ApiParams(0, 20)

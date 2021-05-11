@@ -2,11 +2,15 @@ package com.friple.immarvelhero.ui.screens
 
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
+import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.NestedScrollView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.friple.domain.entities.heroes.MarvelCharacter
+import com.friple.immarvelhero.R
 import com.friple.immarvelhero.databinding.ScreenMainBinding
 import com.friple.immarvelhero.ui.adapters.MainScreenAdapter
 import com.friple.immarvelhero.ui.recyclerview.views.AppViewFactory
@@ -19,7 +23,7 @@ import com.friple.immarvelhero.utilits.states.AppStatesController
 import com.friple.immarvelhero.utilits.states.AppStatesMainControllerImpl
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-
+// TODO: 5/11/2021 Make DI
 class MainScreen : BaseFragment<ScreenMainBinding, MainScreenViewModel>(
     ScreenMainBinding::inflate,
     MainScreenViewModel::class.java
@@ -44,6 +48,7 @@ class MainScreen : BaseFragment<ScreenMainBinding, MainScreenViewModel>(
         initFields()
         setObservers()
         initRecyclerView()
+        initBackButton()
     }
 
     private fun setObservers() {
@@ -120,6 +125,20 @@ class MainScreen : BaseFragment<ScreenMainBinding, MainScreenViewModel>(
         })
     }
 
+    private fun initBackButton() {
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (viewModel.typeOfScreen.value == TYPE_SCREEN_HERO_DETAIL) {
+                        onClickFromItem()
+                    } else {
+                        APP_ACTIVITY.finish()
+                    }
+                }
+            }
+        APP_ACTIVITY.onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
+
     // Callback from adapter
     override fun onClickFromItem() {
         APP_ACTIVITY.title = "Home"
@@ -152,6 +171,7 @@ class MainScreen : BaseFragment<ScreenMainBinding, MainScreenViewModel>(
         viewModel.recentDataOfDetailScreen.value = character
 
         mAdapter.setData(listCharacterViews)
+
     }
 
     override fun onResume() {
